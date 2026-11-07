@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kingo Yama — Türkçe Oyun Yamaları (Fire Emblem, 3DS, GBA)</title>
+<meta name="description" content="Fire Emblem Awakening, Fire Emblem Echoes ve diğer oyunlar için ücretsiz Türkçe çeviri yamaları. 3DS, GBA ve Switch için kurulum rehberi.">
+<meta name="keywords" content="türkçe yama, fire emblem türkçe yama, fire emblem awakening türkçe, fire emblem echoes türkçe, 3ds türkçe yama, gba türkçe yama, citra türkçe">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kingo Yama — Türkçe Oyun Yamaları">
+<meta property="og:description" content="Fire Emblem başta olmak üzere 3DS, GBA ve Switch oyunları için ücretsiz Türkçe yamalar.">
+<meta name="theme-color" content="#0c0d12">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0d12;--p:#14161e;--p2:#1b1e29;--line:#272b39;--t:#eceef4;--m:#8d94a8;--acc:#e8443a;--gold:#f3b33d;--ok:#3ecf8e;--wip:#4ea3ff;--plan:#a78bfa}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--t);font-family:Inter,system-ui,sans-serif;line-height:1.55}
+a{color:inherit}
+.w{max-width:1120px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:0;z-index:5;background:rgba(12,13,18,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .w{display:flex;align-items:center;gap:22px;height:60px}
+.logo{font-family:"Chakra Petch";font-weight:700;font-size:20px;letter-spacing:.02em;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo img{width:44px;height:44px;object-fit:contain;display:block}
+nav .links{margin-left:auto;display:flex;gap:18px;font-size:14px;color:var(--m)}
+nav .links a{text-decoration:none}nav .links a:hover{color:var(--t)}
+@media(max-width:600px){nav .links{display:none}}
+.hero{padding:76px 0 56px;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:-40% -10% auto auto;width:620px;height:620px;background:radial-gradient(circle,rgba(232,68,58,.22),transparent 65%);pointer-events:none}
+.hero h1{font-family:"Chakra Petch";font-size:clamp(36px,6vw,64px);line-height:1.02;margin:0 0 16px;letter-spacing:-.01em;max-width:760px}
+.hero h1 em{font-style:normal;color:var(--acc)}
+.hero p{color:var(--m);font-size:18px;max-width:600px;margin:0 0 26px}
+.stats{display:flex;gap:28px;flex-wrap:wrap}
+.stat b{display:block;font-family:"Chakra Petch";font-size:30px}
+.stat span{color:var(--m);font-size:13px}
+section{padding:40px 0}
+h2{font-family:"Chakra Petch";font-size:28px;margin:0 0 6px}
+.lead{color:var(--m);margin:0 0 22px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.f{background:var(--p);border:1px solid var(--line);color:var(--m);border-radius:999px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer}
+.f.on{background:var(--t);color:var(--bg);border-color:var(--t)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.card{background:var(--p);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-3px);border-color:#3a3f52}
+.cover{height:150px;position:relative;display:flex;align-items:flex-end;padding:16px}
+.cover .ttl{font-family:"Chakra Petch";font-size:24px;font-weight:700;line-height:1.05;text-shadow:0 2px 12px rgba(0,0,0,.5);position:relative}
+.cover .plat{position:absolute;top:14px;left:14px;font-family:"JetBrains Mono";font-size:11px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.2);padding:3px 8px;border-radius:6px}
+.badge{position:absolute;top:14px;right:14px;font-size:11px;font-weight:600;padding:4px 9px;border-radius:999px;background:rgba(0,0,0,.5)}
+.b-ok{color:var(--ok);border:1px solid var(--ok)}.b-wip{color:var(--wip);border:1px solid var(--wip)}.b-plan{color:var(--plan);border:1px solid var(--plan)}
+.cb{padding:16px;display:flex;flex-direction:column;gap:12px;flex:1}
+.cb p{margin:0;color:var(--m);font-size:14px}
+.bar{height:6px;background:var(--p2);border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--gold))}
+.meta{display:flex;justify-content:space-between;font-size:12px;color:var(--m)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--acc);color:#fff;border:0;border-radius:10px;padding:11px 18px;font:inherit;font-weight:600;font-size:14px;cursor:pointer;text-decoration:none}
+.btn:hover{filter:brightness(1.1)}
+.btn.ghost{background:var(--p2);border:1px solid var(--line);color:var(--t)}
+.btn.off{background:var(--p2);color:var(--m);cursor:default;filter:none}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.step{background:var(--p);border:1px solid var(--line);border-radius:14px;padding:18px}
+.step h3{margin:0 0 8px;font-size:16px;display:flex;gap:10px;align-items:center}
+.step h3 span{font-family:"Chakra Petch";background:var(--p2);border:1px solid var(--line);width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:14px}
+.step p,.step li{color:var(--m);font-size:14px;margin:0}
+.step ol{margin:6px 0 0;padding-left:18px}
+code{font-family:"JetBrains Mono";font-size:12.5px;background:var(--p2);border:1px solid var(--line);padding:1px 6px;border-radius:5px;color:var(--gold);word-break:break-all}
+details{background:var(--p);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:600}
+details p{color:var(--m);margin:10px 0 0;font-size:14px}
+.warn{background:rgba(243,179,61,.08);border:1px solid rgba(243,179,61,.35);border-radius:12px;padding:14px 18px;font-size:14px;color:#f5d48f}
+#yorumlar .yb{background:var(--p);border:1px solid var(--line);border-radius:16px;padding:20px}
+#yorumlar .bos{color:var(--m);font-size:14px;margin:0}
+footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--m);font-size:13px;margin-top:30px}
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto;z-index:20}
+.ov.on{display:flex}
+.md{background:var(--p);border:1px solid var(--line);border-radius:18px;max-width:760px;width:100%;overflow:hidden}
+.md .cover{height:200px}
+.md .cover .ttl{font-size:34px}
+.mb{padding:22px 24px 26px}
+.mb h4{margin:22px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--m)}
+.mb p{margin:0 0 8px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kv div{background:var(--p2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13px}
+.kv b{display:block;color:var(--m);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.mb ul{margin:0;padding-left:18px;color:var(--m);font-size:14px}
+.x{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);color:#fff;width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:18px;z-index:2}
+.mb .steps{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.mb .step{background:var(--p2)}.mb .step h3 span{background:var(--p)}
+.kn{color:var(--m);font-size:14px}
+.dl{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+</style>
+</head>
+<body>
+<nav><div class="w">
+  <a class="logo" href="#top"><img src="img/logo.png" alt="">Kingo Yama</a>
+  <div class="links"><a href="#yamalar">Yamalar</a><a href="#sss">SSS</a><a href="#yorumlar">Yorumlar</a></div>
+</div></nav>
+
+<div class="w" id="top">
+  <div class="hero">
+    <h1>Sevdiğin oyunlar, <em>Türkçe</em>.</h1>
+    <p>Fire Emblem başta olmak üzere 3DS, GBA ve Switch oyunları için hazırladığımız ücretsiz Türkçe çeviri yamaları.</p>
+    <div class="stats" id="stats"></div>
+  </div>
+</div>
+
+<section id="yamalar"><div class="w">
+  <h2>Yamalar</h2>
+  <p class="lead">Bir yamaya tıklayarak detayları, kurulum adımlarını ve indirme bağlantısını görebilirsiniz.</p>
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="grid"></div>
+</div></section>
+
+<section id="sss"><div class="w">
+  <h2>Sık sorulanlar</h2>
+  <details><summary>Neden bazı yerlerde ş, ı, ğ yerine s, i, g yazıyor?</summary><p>Oyunun orijinal yazı tipinde bu harfler bulunmamaktadır. HD doku paketleriyle uyumluluğu korumak için yazı tipi değiştirilmemiş, bu harfler en yakın karşılıklarıyla yazılmıştır.</p></details>
+  <details><summary>Hangi bölge (EUR / USA) için?</summary><p>Her yamanın sayfasında hangi sürümle test edildiği belirtilmiştir. Farklı bölge sürümlerinde menüler veya dosya adları uyuşmayabilir.</p></details>
+  <details><summary>Bir hata buldum, ne yapmalıyım?</summary><p>Hatanın hangi bölümde ve hangi cümlede olduğunu (mümkünse ekran görüntüsüyle) bize iletin; bir sonraki sürümde düzeltilecektir.</p></details>
+  <details><summary>Ücretli mi?</summary><p>Hayır, tüm yamalar tamamen ücretsizdir. Lütfen yamaları satmayın veya kendi çalışmanız gibi paylaşmayın; bağlantı paylaşmak serbesttir.</p></details>
+</div></section>
+
+<section id="yorumlar"><div class="w">
+  <h2>Yorumlar</h2>
+  <p class="lead">Görüşlerinizi, önerilerinizi ve hata bildirimlerinizi buraya yazabilirsiniz. Yorum yazmak için GitHub hesabıyla giriş yapılması gerekir.</p>
+  <div class="yb" id="yorum-kutu"><p class="bos">Yorum bölümü yakında açılacaktır.</p></div>
+</div></section>
+
+<footer><div class="w">
+  Kingo Yama — hayran çevirisi, resmi değildir. Oyunların tüm hakları sahiplerine aittir.
+</div></footer>
+
+<div class="ov" id="ov"><div class="md" id="md"></div></div>
+
+<script>
+/* ===== YORUM AYARLARI (Giscus) =====
+   https://giscus.app adresinde depo adınızı yazın; sayfanın altında çıkan
+   data-repo, data-repo-id, data-category ve data-category-id değerlerini
+   aşağıya kopyalayın. Boş bırakılırsa "Yorum bölümü yakında" yazar. */
+window.YORUM = {
+  repo: "",        // ör. "kullaniciadi/kingo-yama"
+  repoId: "",      // ör. "R_kgDO..."
+  category: "",    // ör. "Announcements" ya da "General"
+  categoryId: ""   // ör. "DIC_kwDO..."
+};
+</script>
+<script src="yamalar.js"></script>
+<script>
+/* Yama bilgileri yamalar.js dosyasında. Düzenlemek için duzenle.html sayfasını açın. */
+const YAMALAR=window.YAMALAR||[];
+
+const fmt=t=>esc(t).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\[(.+?)\]/g,"<code>$1</code>");
+const DURUM={ok:["Tamamlandı","b-ok"],wip:["Devam ediyor","b-wip"],plan:["Planlandı","b-plan"]};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const cssUrl=u=>String(u).replace(/['"()\\\s<>]/g,c=>"%"+c.charCodeAt(0).toString(16).padStart(2,"0"));
+const cssPos=p=>/^[a-z0-9%.\s-]{1,40}$/i.test(p||"")?p:"center";
+const cover=y=>{
+ const rk=i=>/^#[0-9a-f]{3,8}$/i.test((y.renk||[])[i]||"")?y.renk[i]:"#333";
+ const g=`linear-gradient(135deg,${rk(0)},${rk(1)})`;
+ if(y.resim) return `background-color:${rk(0)};`+
+  `background-image:linear-gradient(to top,rgba(12,13,18,.92) 0%,rgba(12,13,18,.35) 55%,rgba(12,13,18,.1) 100%),url('${cssUrl(y.resim)}'),${g};`+
+  `background-size:cover,cover,cover;background-position:center,${cssPos(y.konum)},center;background-repeat:no-repeat`;
+ return `background:${g},#222;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0 2px,transparent 2px 14px),${g}`;
+};
+
+$("stats").innerHTML=[
+ [YAMALAR.filter(y=>y.durum==="ok").length,"tamamlanan yama"],
+ [YAMALAR.filter(y=>y.durum==="wip").length,"devam eden"],
+ [new Set(YAMALAR.map(y=>y.platform)).size,"platform"]
+].map(([n,t])=>`<div class="stat"><b>${n}</b><span>${t}</span></div>`).join("");
+
+let filt="Hepsi";
+function renderFilters(){
+ const opts=["Hepsi",...new Set(YAMALAR.map(y=>y.platform)),"Tamamlandı"];
+ $("filters").innerHTML=opts.map(o=>`<button class="f${o===filt?" on":""}" data-f="${esc(o)}">${esc(o)}</button>`).join("");
+ $("filters").querySelectorAll(".f").forEach(b=>b.onclick=()=>{filt=b.dataset.f;renderFilters();renderGrid()});
+}
+function renderGrid(){
+ const list=YAMALAR.filter(y=>filt==="Hepsi"||y.platform===filt||(filt==="Tamamlandı"&&y.durum==="ok"));
+ $("grid").innerHTML=list.map(y=>{const [dl,dc]=DURUM[y.durum];return`
+  <div class="card" data-id="${y.id}" tabindex="0">
+   <div class="cover" style="${cover(y)}"><span class="plat">${esc(y.platform)}</span><span class="badge ${dc}">${dl}</span><div class="ttl">${esc(y.ad)}</div></div>
+   <div class="cb"><p>${esc(y.ozet)}</p>
+    <div><div class="bar"><i style="width:${y.ilerleme}%"></i></div>
+    <div class="meta" style="margin-top:6px"><span>%${y.ilerleme} çevrildi</span><span>Sürüm ${esc(y.surum)}</span></div></div>
+   </div></div>`}).join("");
+ $("grid").querySelectorAll(".card").forEach(c=>{c.onclick=()=>location.hash=c.dataset.id;c.onkeydown=e=>{if(e.key==="Enter")location.hash=c.dataset.id}});
+}
+function openModal(y){
+ const [dl,dc]=DURUM[y.durum];
+ const dlBtn=y.indir?`<a class="btn" href="${esc(y.indir)}" target="_blank" rel="noopener">⬇ Yamayı indir</a>`:`<span class="btn off">${y.durum==="ok"?"İndirme linki yakında":"Henüz hazır değil"}</span>`;
+ const kur=y.kurulum||[];
+ const kurHtml=kur.length?`<h4 id="kurulum-md">Kurulum</h4>${y.kurulumNot?`<p class="kn">${fmt(y.kurulumNot)}</p>`:""}
+   <div class="steps">${kur.map((k,i)=>`<div class="step"><h3><span>${i+1}</span>${esc(k.baslik)}</h3><ol>${(k.adimlar||[]).map(a=>`<li>${fmt(a)}</li>`).join("")}</ol></div>`).join("")}</div>
+   <div class="warn" style="margin-top:14px">Burada <b>ROM ya da oyun dosyası paylaşılmaz</b>, yalnızca çeviri yamaları bulunmaktadır. Yamaları sahip olduğunuz oyunun yedeğiyle kullanmanız gerekir.</div>`:"";
+ $("md").innerHTML=`
+  <div class="cover" style="${cover(y)};position:relative"><button class="x" id="x" aria-label="Kapat">×</button>
+   <span class="plat">${esc(y.platform)}</span><div class="ttl">${esc(y.ad)}</div></div>
+  <div class="mb">
+   <p>${esc(y.detay)}</p>
+   <div class="dl">${dlBtn}${kur.length?`<button class="btn ghost" id="kur">Nasıl kurulur?</button>`:""}</div>
+   <h4>Bilgiler</h4>
+   <div class="kv">
+    <div><b>Durum</b><span class="${dc}" style="border:0">${dl}</span></div>
+    <div><b>Sürüm</b>${esc(y.surum)}</div>
+    <div><b>İlerleme</b>%${y.ilerleme}</div>
+    ${y.test?`<div><b>Test edildi</b>${esc(y.test)}</div>`:""}
+    ${y.titleId?`<div><b>TitleID</b><code>${esc(y.titleId)}</code></div>`:""}
+   </div>
+   ${y.icerik.length?`<h4>Neler çevrildi</h4><ul>${y.icerik.map(i=>`<li>${esc(i)}</li>`).join("")}</ul>`:""}
+   ${kurHtml}
+  </div>`;
+ $("ov").classList.add("on");document.body.style.overflow="hidden";
+ $("x").onclick=closeModal;if($("kur"))$("kur").onclick=()=>$("kurulum-md").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function closeModal(){$("ov").classList.remove("on");document.body.style.overflow="";if(YAMALAR.some(y=>y.id===location.hash.slice(1))){try{history.replaceState(null,"",location.pathname+location.search)}catch{location.hash=""}}}
+$("ov").onclick=e=>{if(e.target.id==="ov")closeModal()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+function route(){const y=YAMALAR.find(y=>y.id===location.hash.slice(1));if(y)openModal(y);else if($("ov").classList.contains("on"))closeModal()}
+window.addEventListener("hashchange",route);
+renderFilters();renderGrid();route();
+
+(function yorumlar(){
+ const c=window.YORUM||{};
+ if(!c.repo||!c.repoId||!c.category||!c.categoryId) return;
+ const box=$("yorum-kutu");box.innerHTML="";
+ const sc=document.createElement("script");
+ sc.src="https://giscus.app/client.js";
+ const a={repo:c.repo,"repo-id":c.repoId,category:c.category,"category-id":c.categoryId,
+  mapping:"specific",term:"Kingo Yama — Yorumlar",strict:"0","reactions-enabled":"1",
+  "emit-metadata":"0","input-position":"top",theme:"transparent_dark",lang:"tr",loading:"lazy"};
+ for(const k in a) sc.setAttribute("data-"+k,a[k]);
+ sc.crossOrigin="anonymous";sc.async=true;
+ box.append(sc);
+})();
+</script>
+</body>
+</html>
