@@ -28,8 +28,25 @@ nav .w{display:flex;align-items:center;gap:22px;height:60px}
 nav .links{margin-left:auto;display:flex;gap:18px;font-size:14px;color:var(--m)}
 nav .links a{text-decoration:none}nav .links a:hover{color:var(--t)}
 @media(max-width:600px){nav .links{display:none}}
-.hero{padding:76px 0 56px;position:relative;overflow:hidden}
-.hero:before{content:"";position:absolute;inset:-40% -10% auto auto;width:620px;height:620px;background:radial-gradient(circle,rgba(232,68,58,.22),transparent 65%);pointer-events:none}
+/* --- arka plan --- */
+.bg{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.bg:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:46px 46px;-webkit-mask-image:radial-gradient(ellipse 85% 65% at 50% 0%,#000 25%,transparent 75%);mask-image:radial-gradient(ellipse 85% 65% at 50% 0%,#000 25%,transparent 75%)}
+.bg i{position:absolute;border-radius:50%;filter:blur(20px);animation:drift 20s ease-in-out infinite alternate}
+.bg .g1{width:760px;height:760px;top:-300px;right:-180px;background:radial-gradient(circle,rgba(232,68,58,.24),transparent 65%)}
+.bg .g2{width:640px;height:640px;top:260px;left:-260px;background:radial-gradient(circle,rgba(243,179,61,.10),transparent 65%);animation-duration:26s}
+.bg .g3{width:520px;height:520px;bottom:-260px;right:10%;background:radial-gradient(circle,rgba(78,163,255,.08),transparent 65%);animation-duration:32s}
+@keyframes drift{to{transform:translate(-70px,50px) scale(1.12)}}
+.top{position:relative;overflow:hidden}
+.art-wrap{position:absolute;inset:0;pointer-events:none;-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
+.top>.w{position:relative;z-index:1}
+.hero-art{position:absolute;top:-70px;right:-40px;width:min(760px,60vw);display:grid;grid-template-columns:repeat(3,1fr);gap:16px;transform:rotate(-9deg);opacity:.45;pointer-events:none;-webkit-mask-image:linear-gradient(to left,#000 25%,transparent 90%);mask-image:linear-gradient(to left,#000 25%,transparent 90%)}
+.hero-art span{aspect-ratio:3/4;border-radius:16px;background:#1b1e29 center/cover no-repeat;border:1px solid rgba(255,255,255,.08);box-shadow:0 20px 50px rgba(0,0,0,.55);animation:float 9s ease-in-out infinite alternate}
+.hero-art span:nth-child(3n+2){margin-top:-60px;animation-delay:-3s}
+.hero-art span:nth-child(3n){margin-top:30px;animation-delay:-6s}
+@keyframes float{to{transform:translateY(-18px)}}
+@media(max-width:760px){.hero-art{width:110%;right:-45%;opacity:.25}}
+@media(prefers-reduced-motion:reduce){.bg i,.hero-art span{animation:none}}
+.hero{padding:96px 0 72px;position:relative}
 .hero h1{font-family:"Chakra Petch";font-size:clamp(36px,6vw,64px);line-height:1.02;margin:0 0 16px;letter-spacing:-.01em;max-width:760px}
 .hero h1 em{font-style:normal;color:var(--acc)}
 .hero p{color:var(--m);font-size:18px;max-width:600px;margin:0 0 26px}
@@ -99,13 +116,17 @@ footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--m);font-
   <div class="links"><a href="#yamalar">Yamalar</a><a href="#sss">SSS</a><a href="#yorumlar">Yorumlar</a></div>
 </div></nav>
 
-<div class="w" id="top">
+<div class="bg" aria-hidden="true"><i class="g1"></i><i class="g2"></i><i class="g3"></i></div>
+<header class="top" id="top">
+<div class="art-wrap" aria-hidden="true"><div class="hero-art"><span style="background-image:url(img/FireEmblemAwakening.jpg)"></span><span style="background-image:url(img/Fire_Emblem_Echoes_cover.jpg)"></span><span style="background-image:url(img/Fire_Emblem_Three_Houses.jpg)"></span><span style="background-image:url(img/FireEmblemFates.jpg)"></span><span style="background-image:url(img/fire-emblem.jpg)"></span><span style="background-image:url(img/FireEmblemAwakening.jpg)"></span></div></div>
+<div class="w">
   <div class="hero">
-    <h1>Sevdiğin oyunlar, <em>Türkçe</em>.</h1>
+    <h1>Sevdiğin oyunlar artık <em>Türkçe</em>.</h1>
     <p>Fire Emblem başta olmak üzere 3DS, GBA ve Switch oyunları için hazırladığımız ücretsiz Türkçe çeviri yamaları.</p>
     <div class="stats" id="stats"></div>
   </div>
 </div>
+</header>
 
 <section id="yamalar"><div class="w">
   <h2>Yamalar</h2>
