@@ -156,6 +156,13 @@ footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--m);font-
 </div>
 </header>
 
+<section id="one-cikan" class="v-home"><div class="w">
+  <h2>Yamalar</h2>
+  <p class="lead">Bir yamaya tıklayarak detayları, kurulum adımlarını ve indirme bağlantısını görebilirsiniz.</p>
+  <div class="grid" id="homeGrid"></div>
+  <div style="margin-top:22px"><a class="btn ghost" href="#yamalar">Tüm yamaları gör →</a></div>
+</div></section>
+
 <section id="yamalar" class="v-yama"><div class="w">
   <h2>Yamalar</h2>
   <p class="lead">Bir yamaya tıklayarak detayları, kurulum adımlarını ve indirme bağlantısını görebilirsiniz.</p>
@@ -264,7 +271,7 @@ function openModal(y){
  $("ov").classList.add("on");document.body.style.overflow="hidden";
  $("x").onclick=closeModal;if($("kur"))$("kur").onclick=()=>$("kurulum-md").scrollIntoView({behavior:"smooth",block:"start"});
 }
-function closeModal(){$("ov").classList.remove("on");document.body.style.overflow="";if(YAMALAR.some(y=>y.id===location.hash.slice(1))){try{history.replaceState(null,"","#yamalar")}catch{location.hash="yamalar"}}}
+function closeModal(){$("ov").classList.remove("on");document.body.style.overflow="";if(YAMALAR.some(y=>y.id===location.hash.slice(1))){try{history.replaceState(null,"",view==="yamalar"?"#yamalar":location.pathname+location.search)}catch{location.hash=view==="yamalar"?"yamalar":""}}}
 $("ov").onclick=e=>{if(e.target.id==="ov")closeModal()};
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
 let view=null;
@@ -276,14 +283,26 @@ function setView(v){
 function route(){
  const h=decodeURIComponent(location.hash.slice(1));
  const y=YAMALAR.find(y=>y.id===h);
- const changed=setView(y||h==="yamalar"?"yamalar":"home");
+ const changed=setView(y?(view||"yamalar"):h==="yamalar"?"yamalar":"home");
  if(y)openModal(y);else if($("ov").classList.contains("on"))closeModal();
  const el=h&&!y&&h!=="yamalar"?document.getElementById(h):null;
  if(el)el.scrollIntoView({block:"start"});else if(h==="yamalar"||(changed&&!y))scrollTo({top:0,behavior:"instant"});
 }
 document.querySelectorAll('a[href="#"]').forEach(a=>a.onclick=e=>{e.preventDefault();history.pushState(null,"",location.pathname+location.search);route();scrollTo({top:0,behavior:"smooth"})});
 window.addEventListener("hashchange",route);window.addEventListener("popstate",route);
-renderFilters();renderGrid();route();
+function renderHome(){
+ const k=[...YAMALAR];
+ for(let i=k.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[k[i],k[j]]=[k[j],k[i]]}
+ $("homeGrid").innerHTML=k.slice(0,6).map(y=>{const [dl,dc]=DURUM[y.durum];return`
+  <div class="card" data-id="${esc(y.id)}" tabindex="0">
+   <div class="cover" style="${cover(y)}"><span class="plat">${esc(y.platform)}</span><span class="badge ${dc}">${dl}</span><div class="ttl">${esc(y.ad)}</div></div>
+   <div class="cb"><p>${esc(y.ozet)}</p>
+    <div><div class="bar"><i style="width:${+y.ilerleme||0}%"></i></div>
+    <div class="meta" style="margin-top:6px"><span>%${+y.ilerleme||0} çevrildi</span><span>Sürüm ${esc(y.surum)}</span></div></div>
+   </div></div>`}).join("");
+ $("homeGrid").querySelectorAll(".card").forEach(c=>{c.onclick=()=>location.hash=c.dataset.id;c.onkeydown=e=>{if(e.key==="Enter")location.hash=c.dataset.id}});
+}
+renderFilters();renderGrid();renderHome();route();
 
 (function yorumlar(){
  const c=window.YORUM||{};
@@ -301,7 +320,7 @@ renderFilters();renderGrid();route();
 
 /* kartlar fareyi takip etsin */
 (()=>{if(matchMedia("(hover:none),(prefers-reduced-motion:reduce)").matches)return;
- const g=document.getElementById("grid");let cur=null;
+ document.querySelectorAll(".grid").forEach(g=>{let cur=null;
  const reset=c=>{c.classList.remove("tilt");c.style.transform="";c.style.transition="transform .45s ease,border-color .15s,box-shadow .2s"};
  g.addEventListener("mousemove",e=>{const c=e.target.closest(".card");if(cur&&cur!==c)reset(cur);cur=c;if(!c)return;
   if(!c.querySelector(".glare"))c.append(Object.assign(document.createElement("i"),{className:"glare"}));
@@ -309,7 +328,7 @@ renderFilters();renderGrid();route();
   c.style.transition="";c.classList.add("tilt");
   c.style.transform=`rotateX(${(.5-y)*14}deg) rotateY(${(x-.5)*14}deg) translateY(-4px) scale(1.02)`;
   c.style.setProperty("--gx",x*100+"%");c.style.setProperty("--gy",y*100+"%");});
- g.addEventListener("mouseleave",()=>{if(cur)reset(cur);cur=null});})();
+ g.addEventListener("mouseleave",()=>{if(cur)reset(cur);cur=null});});})();
 </script>
 </body>
 </html>
