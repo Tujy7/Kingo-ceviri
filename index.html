@@ -27,7 +27,15 @@ nav .w{display:flex;align-items:center;gap:22px;height:60px}
 .logo img{width:44px;height:44px;object-fit:contain;display:block}
 nav .links{margin-left:auto;display:flex;gap:18px;font-size:14px;color:var(--m)}
 nav .links a{text-decoration:none}nav .links a:hover{color:var(--t)}
-@media(max-width:600px){nav .links{display:none}}
+.tabs{display:flex;gap:6px}
+.tab{text-decoration:none;font-size:14px;font-weight:500;color:var(--m);padding:7px 15px;border-radius:999px;border:1px solid transparent;transition:color .15s,background .15s,border-color .15s}
+.tab:hover{color:var(--t);background:var(--p2)}
+.tab.on{color:var(--t);background:var(--p2);border-color:var(--line);box-shadow:inset 0 -2px 0 var(--acc)}
+body[data-view=home] .v-yama,body[data-view=yamalar] .v-home{display:none}
+body[data-view=yamalar] #yamalar{padding-top:56px;min-height:70vh}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 30px}
+@media(max-width:600px){nav .links{display:none}nav .w{gap:12px}.tab{padding:6px 11px}}
+@media(max-width:420px){.logo span{display:none}}
 /* --- arka plan --- */
 .bg{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
 .bg:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:46px 46px;-webkit-mask-image:radial-gradient(ellipse 85% 65% at 50% 0%,#000 25%,transparent 75%);mask-image:radial-gradient(ellipse 85% 65% at 50% 0%,#000 25%,transparent 75%)}
@@ -50,6 +58,15 @@ nav .links a{text-decoration:none}nav .links a:hover{color:var(--t)}
 @media(max-width:760px){.hero-art{width:120%;right:-50%;opacity:.25}}
 /* kart 3D eğilme */
 .grid{perspective:1000px}
+#grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.card.poster{aspect-ratio:3/4;background:#111;display:block}
+.poster .pbg{position:absolute;inset:-20px;background:center/cover no-repeat;filter:blur(18px) brightness(.55);transform:scale(1.1)}
+.poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.poster .plat,.poster .badge{z-index:1}
+.poster .plat{position:absolute;top:12px;left:12px;font-family:"JetBrains Mono";font-size:11px;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.2);padding:3px 8px;border-radius:6px}
+.poster .badge{top:12px;right:12px}
+.poster .ph{position:absolute;inset:auto 0 0 0;z-index:1;padding:40px 16px 14px;font-family:"Chakra Petch";font-weight:700;font-size:20px;line-height:1.1;background:linear-gradient(transparent,rgba(12,13,18,.92));opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s}
+.poster:hover .ph,.poster:focus .ph,.poster.noimg .ph{opacity:1;transform:none}
 .card{transform-style:preserve-3d;will-change:transform;position:relative}
 .card.tilt{transition:transform .08s linear,border-color .15s,box-shadow .2s;box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 1px rgba(232,68,58,.25)}
 .card .glare{position:absolute;inset:0;pointer-events:none;border-radius:inherit;opacity:0;transition:opacity .2s;background:radial-gradient(circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.18),transparent 55%);z-index:2}
@@ -119,32 +136,34 @@ footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--m);font-
 .dl{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
 </style>
 </head>
-<body>
+<body data-view="home">
 <nav><div class="w">
-  <a class="logo" href="#top"><img src="img/logo.png" alt="">Kingo Yama</a>
-  <div class="links"><a href="#yamalar">Yamalar</a><a href="#sss">SSS</a><a href="#yorumlar">Yorumlar</a></div>
+  <a class="logo" href="#"><img src="img/logo.png" alt=""><span>Kingo Yama</span></a>
+  <div class="tabs"><a class="tab" href="#" data-v="home">Ana Sayfa</a><a class="tab" href="#yamalar" data-v="yamalar">Yamalar</a></div>
+  <div class="links"><a href="#sss">SSS</a><a href="#yorumlar">Yorumlar</a></div>
 </div></nav>
 
 <div class="bg" aria-hidden="true"><i class="g1"></i><i class="g2"></i><i class="g3"></i></div>
-<header class="top" id="top">
+<header class="top v-home" id="top">
 <div class="art-wrap" aria-hidden="true"><div class="hero-art"><div class="col"><div class="strip"><span style="background-image:url(img/FireEmblemAwakening.jpg)"></span><span style="background-image:url(img/Fire_Emblem_Echoes_cover.jpg)"></span><span style="background-image:url(img/Fire_Emblem_Three_Houses.jpg)"></span><span style="background-image:url(img/FireEmblemFates.jpg)"></span><span style="background-image:url(img/fire-emblem.jpg)"></span><span style="background-image:url(img/FireEmblemAwakening.jpg)"></span><span style="background-image:url(img/Fire_Emblem_Echoes_cover.jpg)"></span><span style="background-image:url(img/Fire_Emblem_Three_Houses.jpg)"></span><span style="background-image:url(img/FireEmblemFates.jpg)"></span><span style="background-image:url(img/fire-emblem.jpg)"></span></div></div><div class="col"><div class="strip"><span style="background-image:url(img/Fire_Emblem_Three_Houses.jpg)"></span><span style="background-image:url(img/FireEmblemFates.jpg)"></span><span style="background-image:url(img/fire-emblem.jpg)"></span><span style="background-image:url(img/FireEmblemAwakening.jpg)"></span><span style="background-image:url(img/Fire_Emblem_Echoes_cover.jpg)"></span><span style="background-image:url(img/Fire_Emblem_Three_Houses.jpg)"></span><span style="background-image:url(img/FireEmblemFates.jpg)"></span><span style="background-image:url(img/fire-emblem.jpg)"></span><span style="background-image:url(img/FireEmblemAwakening.jpg)"></span><span style="background-image:url(img/Fire_Emblem_Echoes_cover.jpg)"></span></div></div><div class="col"><div class="strip"><span style="background-image:url(img/fire-emblem.jpg)"></span><span style="background-image:url(img/FireEmblemAwakening.jpg)"></span><span style="background-image:url(img/Fire_Emblem_Echoes_cover.jpg)"></span><span style="background-image:url(img/Fire_Emblem_Three_Houses.jpg)"></span><span style="background-image:url(img/FireEmblemFates.jpg)"></span><span style="background-image:url(img/fire-emblem.jpg)"></span><span style="background-image:url(img/FireEmblemAwakening.jpg)"></span><span style="background-image:url(img/Fire_Emblem_Echoes_cover.jpg)"></span><span style="background-image:url(img/Fire_Emblem_Three_Houses.jpg)"></span><span style="background-image:url(img/FireEmblemFates.jpg)"></span></div></div></div></div>
 <div class="w">
   <div class="hero">
     <h1>Sevdiğin oyunlar artık <em>Türkçe</em>.</h1>
     <p>Fire Emblem başta olmak üzere 3DS, GBA ve Switch oyunları için hazırladığımız ücretsiz Türkçe çeviri yamaları.</p>
+    <div class="cta"><a class="btn" href="#yamalar">Yamalara göz atın →</a></div>
     <div class="stats" id="stats"></div>
   </div>
 </div>
 </header>
 
-<section id="yamalar"><div class="w">
+<section id="yamalar" class="v-yama"><div class="w">
   <h2>Yamalar</h2>
   <p class="lead">Bir yamaya tıklayarak detayları, kurulum adımlarını ve indirme bağlantısını görebilirsiniz.</p>
   <div class="filters" id="filters"></div>
   <div class="grid" id="grid"></div>
 </div></section>
 
-<section id="sss"><div class="w">
+<section id="sss" class="v-home"><div class="w">
   <h2>Sık sorulanlar</h2>
   <details><summary>Neden bazı yerlerde ş, ı, ğ yerine s, i, g yazıyor?</summary><p>Oyunun orijinal yazı tipinde bu harfler bulunmamaktadır. HD doku paketleriyle uyumluluğu korumak için yazı tipi değiştirilmemiş, bu harfler en yakın karşılıklarıyla yazılmıştır.</p></details>
   <details><summary>Hangi bölge (EUR / USA) için?</summary><p>Her yamanın sayfasında hangi sürümle test edildiği belirtilmiştir. Farklı bölge sürümlerinde menüler veya dosya adları uyuşmayabilir.</p></details>
@@ -152,7 +171,7 @@ footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--m);font-
   <details><summary>Ücretli mi?</summary><p>Hayır, tüm yamalar tamamen ücretsizdir. Lütfen yamaları satmayın veya kendi çalışmanız gibi paylaşmayın; bağlantı paylaşmak serbesttir.</p></details>
 </div></section>
 
-<section id="yorumlar"><div class="w">
+<section id="yorumlar" class="v-home"><div class="w">
   <h2>Yorumlar</h2>
   <p class="lead">Görüşlerinizi, önerilerinizi ve hata bildirimlerinizi buraya yazabilirsiniz. Yorum yazmak için GitHub hesabıyla giriş yapılması gerekir.</p>
   <div class="yb" id="yorum-kutu"><p class="bos">Yorum bölümü yakında açılacaktır.</p></div>
@@ -210,13 +229,12 @@ function renderFilters(){
 }
 function renderGrid(){
  const list=YAMALAR.filter(y=>filt==="Hepsi"||y.platform===filt||(filt==="Tamamlandı"&&y.durum==="ok"));
- $("grid").innerHTML=list.map(y=>{const [dl,dc]=DURUM[y.durum];return`
-  <div class="card" data-id="${y.id}" tabindex="0">
-   <div class="cover" style="${cover(y)}"><span class="plat">${esc(y.platform)}</span><span class="badge ${dc}">${dl}</span><div class="ttl">${esc(y.ad)}</div></div>
-   <div class="cb"><p>${esc(y.ozet)}</p>
-    <div><div class="bar"><i style="width:${y.ilerleme}%"></i></div>
-    <div class="meta" style="margin-top:6px"><span>%${y.ilerleme} çevrildi</span><span>Sürüm ${esc(y.surum)}</span></div></div>
-   </div></div>`}).join("");
+ $("grid").innerHTML=list.map(y=>{const [dl,dc]=DURUM[y.durum];const u=y.resim?cssUrl(y.resim):"";return`
+  <div class="card poster${u?"":" noimg"}" data-id="${esc(y.id)}" tabindex="0" aria-label="${esc(y.ad)}"${u?"":` style="${cover(y)}"`}>
+   ${u?`<div class="pbg" style="background-image:url('${u}')"></div><img src="${esc(y.resim)}" alt="${esc(y.ad)}" loading="lazy">`:""}
+   <span class="plat">${esc(y.platform)}</span><span class="badge ${dc}">${dl}</span>
+   <div class="ph">${esc(y.ad)}</div>
+  </div>`}).join("");
  $("grid").querySelectorAll(".card").forEach(c=>{c.onclick=()=>location.hash=c.dataset.id;c.onkeydown=e=>{if(e.key==="Enter")location.hash=c.dataset.id}});
 }
 function openModal(y){
@@ -246,11 +264,25 @@ function openModal(y){
  $("ov").classList.add("on");document.body.style.overflow="hidden";
  $("x").onclick=closeModal;if($("kur"))$("kur").onclick=()=>$("kurulum-md").scrollIntoView({behavior:"smooth",block:"start"});
 }
-function closeModal(){$("ov").classList.remove("on");document.body.style.overflow="";if(YAMALAR.some(y=>y.id===location.hash.slice(1))){try{history.replaceState(null,"",location.pathname+location.search)}catch{location.hash=""}}}
+function closeModal(){$("ov").classList.remove("on");document.body.style.overflow="";if(YAMALAR.some(y=>y.id===location.hash.slice(1))){try{history.replaceState(null,"","#yamalar")}catch{location.hash="yamalar"}}}
 $("ov").onclick=e=>{if(e.target.id==="ov")closeModal()};
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
-function route(){const y=YAMALAR.find(y=>y.id===location.hash.slice(1));if(y)openModal(y);else if($("ov").classList.contains("on"))closeModal()}
-window.addEventListener("hashchange",route);
+let view=null;
+function setView(v){
+ if(v===view)return false;view=v;document.body.dataset.view=v;
+ document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.v===v));
+ return true;
+}
+function route(){
+ const h=decodeURIComponent(location.hash.slice(1));
+ const y=YAMALAR.find(y=>y.id===h);
+ const changed=setView(y||h==="yamalar"?"yamalar":"home");
+ if(y)openModal(y);else if($("ov").classList.contains("on"))closeModal();
+ const el=h&&!y&&h!=="yamalar"?document.getElementById(h):null;
+ if(el)el.scrollIntoView({block:"start"});else if(h==="yamalar"||(changed&&!y))scrollTo({top:0,behavior:"instant"});
+}
+document.querySelectorAll('a[href="#"]').forEach(a=>a.onclick=e=>{e.preventDefault();history.pushState(null,"",location.pathname+location.search);route();scrollTo({top:0,behavior:"smooth"})});
+window.addEventListener("hashchange",route);window.addEventListener("popstate",route);
 renderFilters();renderGrid();route();
 
 (function yorumlar(){
