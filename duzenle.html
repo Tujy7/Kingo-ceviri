@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Kingo Yama — Düzenle</title>
+<style>
+:root{--bg:#0c0d12;--p:#14161e;--p2:#1b1e29;--line:#272b39;--t:#eceef4;--m:#8d94a8;--acc:#e8443a;--gold:#f3b33d;--ok:#3ecf8e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--t);font-family:Inter,system-ui,Segoe UI,sans-serif;font-size:15px;line-height:1.5}
+header{position:sticky;top:0;z-index:5;background:rgba(12,13,18,.95);border-bottom:1px solid var(--line)}
+header .w{display:flex;align-items:center;gap:12px;height:64px;flex-wrap:wrap}
+.w{max-width:900px;margin:0 auto;padding:0 18px}
+h1{font-size:19px;margin:0 auto 0 0}
+button,.btn{font:inherit;border-radius:10px;border:1px solid var(--line);background:var(--p2);color:var(--t);padding:9px 15px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+button:hover,.btn:hover{border-color:#3d4357}
+.save{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.save.dirty{box-shadow:0 0 0 3px rgba(232,68,58,.35)}
+.small{padding:5px 10px;font-size:13px}
+.danger{color:#ff8f87}
+#msg{max-width:900px;margin:14px auto 0;padding:0 18px}
+#msg div{border-radius:10px;padding:11px 15px;font-size:14px}
+.m-ok{background:rgba(62,207,142,.1);border:1px solid rgba(62,207,142,.4);color:#9be8c3}
+.m-info{background:rgba(243,179,61,.08);border:1px solid rgba(243,179,61,.35);color:#f5d48f}
+.intro{color:var(--m);margin:18px 0}
+.card{background:var(--p);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden}
+.card>summary{list-style:none;cursor:pointer;padding:15px 18px;display:flex;align-items:center;gap:12px;font-weight:600;font-size:16px}
+.card>summary::-webkit-details-marker{display:none}
+.card>summary:before{content:"▸";color:var(--m);transition:transform .15s}
+.card[open]>summary:before{transform:rotate(90deg)}
+.card>summary .tag{font-size:12px;font-weight:500;color:var(--m);background:var(--p2);border:1px solid var(--line);border-radius:6px;padding:2px 8px}
+.card>summary .sp{margin-left:auto;display:flex;gap:6px}
+.body{padding:4px 18px 20px;border-top:1px solid var(--line)}
+.grp{margin-top:20px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);font-weight:600}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:10px}
+label{display:block;font-size:13px;color:var(--m);margin-bottom:4px}
+label i{font-style:normal;opacity:.7}
+input,select,textarea{width:100%;font:inherit;color:var(--t);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:9px 11px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
+textarea{resize:vertical;min-height:70px}
+input[type=color]{padding:2px;height:40px}
+input[type=range]{padding:0}
+.inline{display:flex;gap:8px;align-items:center}
+.inline input[type=number]{width:80px}
+.yontem{background:var(--p2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:10px}
+.yontem .top{display:flex;gap:8px;align-items:flex-end}
+.yontem .top>div{flex:1}
+.yontem textarea{min-height:110px;margin-top:8px}
+.hint{font-size:12.5px;color:var(--m);margin-top:6px}
+code{font-family:Consolas,monospace;background:var(--p2);border:1px solid var(--line);padding:0 5px;border-radius:4px;color:var(--gold)}
+.add{margin-top:12px;border-style:dashed;width:100%;justify-content:center;color:var(--m)}
+footer{color:var(--m);font-size:13px;padding:30px 0 60px}
+</style>
+</head>
+<body>
+<header><div class="w">
+  <h1>✏️ Yamaları düzenle</h1>
+  <a class="btn" href="index.html" target="_blank">Siteyi aç ↗</a>
+  <button class="save" id="save">💾 Kaydet</button>
+</div></header>
+<div id="msg"></div>
+<main class="w">
+  <p class="intro">Bir yamanın adına tıklayıp açın, kutulara yazın, sonra yukarıdaki <b>Kaydet</b>'e basın. İlk kayıtta bir pencere açılır: <b>kingo-yama</b> klasöründeki <b>yamalar.js</b> dosyasını seçip kaydedin. Sonra siteyi yenileyin (F5).</p>
+  <div id="list"></div>
+  <button class="add" id="addYama">+ Yeni yama ekle</button>
+</main>
+<footer class="w">Bu sayfa sadece sizin bilgisayarınızda düzenleme yapmak içindir. Siteyi yayınlarken yüklemenize gerek yok.</footer>
+
+<script src="yamalar.js"></script>
+<script>
+const YAMALAR = JSON.parse(JSON.stringify(window.YAMALAR || []));
+let dirty = false, fileHandle = null;
+
+const DURUMLAR = [["ok","Tamamlandı"],["wip","Devam ediyor"],["plan","Planlandı"]];
+const KONUMLAR = [["center","Ortası"],["top","Üst kısmı"],["bottom","Alt kısmı"]];
+
+function h(tag, props = {}, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (k === "on") for (const [ev, fn] of Object.entries(v)) el.addEventListener(ev, fn);
+    else if (k in el && k !== "list") el[k] = v; else el.setAttribute(k, v);
+  }
+  for (const c of kids.flat()) if (c != null) el.append(c);
+  return el;
+}
+function markDirty() { dirty = true; document.getElementById("save").classList.add("dirty"); }
+function field(labelText, input, hint) {
+  return h("div", {}, h("label", { innerHTML: labelText }), input, hint ? h("div", { className: "hint", innerHTML: hint }) : null);
+}
+function text(obj, key, ph = "") {
+  return h("input", { value: obj[key] ?? "", placeholder: ph, on: { input: e => { obj[key] = e.target.value; markDirty(); } } });
+}
+function area(obj, key, ph = "", rows = 3) {
+  return h("textarea", { value: obj[key] ?? "", placeholder: ph, rows, on: { input: e => { obj[key] = e.target.value; markDirty(); } } });
+}
+function lines(obj, key, ph = "", rows = 3) {
+  return h("textarea", { value: (obj[key] || []).join("\n"), placeholder: ph, rows,
+    on: { input: e => { obj[key] = e.target.value.split("\n").map(s => s.trim()).filter(Boolean); markDirty(); } } });
+}
+function select(obj, key, opts, onChange) {
+  const s = h("select", { on: { change: e => { obj[key] = e.target.value; markDirty(); onChange && onChange(); } } },
+    opts.map(([v, t]) => h("option", { value: v, textContent: t })));
+  s.value = obj[key];
+  if (s.value !== obj[key]) { s.append(h("option", { value: obj[key], textContent: obj[key] })); s.value = obj[key]; }
+  return s;
+}
+function move(arr, i, d) { const j = i + d; if (j < 0 || j >= arr.length) return; [arr[i], arr[j]] = [arr[j], arr[i]]; markDirty(); render(); }
+
+const openIds = new Set();
+function render() {
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  YAMALAR.forEach((y, i) => list.append(yamaCard(y, i)));
+}
+
+function yamaCard(y, i) {
+  y.kurulum ??= []; y.icerik ??= []; y.renk ??= ["#2b4c9a", "#c2343a"];
+  const title = h("span", { textContent: y.ad || "(adsız yama)" });
+  const card = h("details", { className: "card", open: openIds.has(y.id),
+    on: { toggle: e => e.target.open ? openIds.add(y.id) : openIds.delete(y.id) } });
+  card.append(h("summary", {}, title, h("span", { className: "tag", textContent: y.platform || "?" }),
+    h("span", { className: "sp" },
+      h("button", { className: "small", title: "Yukarı taşı", textContent: "↑", on: { click: e => { e.preventDefault(); move(YAMALAR, i, -1); } } }),
+      h("button", { className: "small", title: "Aşağı taşı", textContent: "↓", on: { click: e => { e.preventDefault(); move(YAMALAR, i, 1); } } }))));
+
+  const ad = text(y, "ad", "Fire Emblem ...");
+  ad.addEventListener("input", () => title.textContent = y.ad || "(adsız yama)");
+
+  const ilerNum = h("input", { type: "number", min: 0, max: 100, value: y.ilerleme ?? 0 });
+  const ilerRng = h("input", { type: "range", min: 0, max: 100, value: y.ilerleme ?? 0 });
+  const setIler = v => { v = Math.max(0, Math.min(100, +v || 0)); y.ilerleme = v; ilerNum.value = v; ilerRng.value = v; markDirty(); };
+  ilerNum.addEventListener("input", e => setIler(e.target.value));
+  ilerRng.addEventListener("input", e => setIler(e.target.value));
+
+  const resim = text(y, "resim", "img/oyun.jpg");
+  const pick = h("input", { type: "file", accept: "image/*", style: "display:none",
+    on: { change: e => { const f = e.target.files[0]; if (f) { y.resim = "img/" + f.name; resim.value = y.resim; markDirty(); } } } });
+
+  const yontemBox = h("div");
+  const drawYontem = () => {
+    yontemBox.innerHTML = "";
+    y.kurulum.forEach((k, ki) => {
+      const ta = h("textarea", { value: (k.adimlar || []).join("\n"), placeholder: "Birinci adım\nİkinci adım\nÜçüncü adım",
+        on: { input: e => { k.adimlar = e.target.value.split("\n").map(s => s.trim()).filter(Boolean); markDirty(); } } });
+      yontemBox.append(h("div", { className: "yontem" },
+        h("div", { className: "top" },
+          field("Yöntem başlığı <i>(ör. Citra, Gerçek 3DS)</i>", text(k, "baslik", "Citra")),
+          h("button", { className: "small", textContent: "↑", title: "Yukarı", on: { click: () => { move(y.kurulum, ki, -1); } } }),
+          h("button", { className: "small danger", textContent: "Sil", on: { click: () => { if (confirm("Bu kurulum yöntemi silinsin mi?")) { y.kurulum.splice(ki, 1); markDirty(); drawYontem(); } } } })),
+        h("label", { innerHTML: "Adımlar <i>— her satıra bir adım yazın, numaraları site kendisi verir</i>", style: "margin-top:10px" }), ta));
+    });
+  };
+  drawYontem();
+
+  card.append(h("div", { className: "body" },
+    h("div", { className: "grp", textContent: "Genel" }),
+    h("div", { className: "row" },
+      field("Oyun adı", ad),
+      field("Platform", text(y, "platform", "3DS")),
+      field("Durum", select(y, "durum", DURUMLAR)),
+      field("Sürüm", text(y, "surum", "1.0"))),
+    h("div", { className: "row" }, field("Ne kadarı çevrildi? <i>(%)</i>", h("div", { className: "inline" }, ilerRng, ilerNum))),
+    h("div", { className: "row" }, field("Kısa özet <i>(kartta görünür)</i>", text(y, "ozet"))),
+    h("div", { className: "row" }, field("Açıklama <i>(yama sayfasında görünür)</i>", area(y, "detay", "", 3))),
+    h("div", { className: "row" }, field("Neler çevrildi <i>— her satıra bir madde</i>", lines(y, "icerik", "Hikâye\nMenüler\nDiyaloglar", 3))),
+
+    h("div", { className: "grp", textContent: "İndirme ve bilgiler" }),
+    h("div", { className: "row" }, field("İndirme linki", text(y, "indir", "https://drive.google.com/..."),
+      "Boş bırakırsanız sayfada “İndirme linki yakında” yazar.")),
+    h("div", { className: "row" },
+      field("Test edildiği yer", text(y, "test", "Citra")),
+      field("TitleID", text(y, "titleId", "Boş bırakılabilir"))),
+
+    h("div", { className: "grp", textContent: "Görünüm" }),
+    h("div", { className: "row" },
+      field("Arka plan fotoğrafı", h("div", { className: "inline" }, resim, pick,
+        h("button", { textContent: "Seç…", on: { click: () => pick.click() } })),
+        "Fotoğraf <b>img</b> klasöründe olmalı. “Seç…” ile oradan seçin. Boş bırakırsanız renkler kullanılır."),
+      field("Fotoğrafın görünen kısmı", select(y, "konum", KONUMLAR))),
+    h("div", { className: "row" },
+      field("Renk 1 <i>(fotoğraf yoksa)</i>", h("input", { type: "color", value: y.renk[0], on: { input: e => { y.renk[0] = e.target.value; markDirty(); } } })),
+      field("Renk 2", h("input", { type: "color", value: y.renk[1], on: { input: e => { y.renk[1] = e.target.value; markDirty(); } } }))),
+
+    h("div", { className: "grp", textContent: "Kurulum" }),
+    h("div", { className: "row" }, field("Kısa açıklama <i>(isteğe bağlı)</i>", text(y, "kurulumNot", "Bu yama oyun dosyalarına dokunmaz..."))),
+    yontemBox,
+    h("button", { className: "add", textContent: "+ Kurulum yöntemi ekle", on: { click: () => { y.kurulum.push({ baslik: "", adimlar: [] }); markDirty(); drawYontem(); } } }),
+    h("div", { className: "hint", innerHTML: "İsteğe bağlı: <code>**kelime**</code> kalın yazar, <code>[romfs]</code> kod gibi gösterir. Hiç kurulum yöntemi yoksa sayfada kurulum bölümü görünmez." }),
+
+    h("div", { style: "margin-top:22px;text-align:right" },
+      h("button", { className: "small danger", textContent: "Bu yamayı sil", on: { click: () => {
+        if (confirm(`“${y.ad}” silinsin mi?`)) { YAMALAR.splice(i, 1); markDirty(); render(); } } } }))
+  ));
+  return card;
+}
+
+document.getElementById("addYama").onclick = () => {
+  let id = "yama-" + Date.now().toString(36);
+  YAMALAR.push({ id, ad: "Yeni yama", platform: "3DS", durum: "plan", ilerleme: 0, surum: "—", ozet: "", detay: "",
+    icerik: [], test: "", titleId: "", indir: "", resim: "", konum: "center", renk: ["#2b4c9a", "#c2343a"], kurulumNot: "", kurulum: [] });
+  openIds.add(id); markDirty(); render();
+  document.getElementById("list").lastElementChild.scrollIntoView({ behavior: "smooth" });
+};
+
+function slug(s) {
+  const tr = { ç: "c", ğ: "g", ı: "i", ö: "o", ş: "s", ü: "u" };
+  return String(s).toLowerCase().replace(/[çğıöşü]/g, c => tr[c]).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "yama";
+}
+function buildFile() {
+  const used = new Set();
+  YAMALAR.forEach(y => {
+    if (!y.id || y.id.startsWith("yama-")) y.id = slug(y.ad);
+    let id = y.id, n = 2; while (used.has(id)) id = y.id + "-" + n++;
+    y.id = id; used.add(id);
+  });
+  return "/* Bu dosyayı duzenle.html ile düzenleyin. */\nwindow.YAMALAR = " + JSON.stringify(YAMALAR, null, 1) + ";\n";
+}
+function msg(html, cls) { document.getElementById("msg").innerHTML = `<div class="${cls}">${html}</div>`; }
+
+document.getElementById("save").onclick = async () => {
+  const content = buildFile();
+  if (window.showSaveFilePicker) {
+    try {
+      if (!fileHandle) fileHandle = await showSaveFilePicker({ suggestedName: "yamalar.js", id: "kingo", startIn: "downloads",
+        types: [{ description: "Yama bilgileri", accept: { "text/javascript": [".js"] } }] });
+      const w = await fileHandle.createWritable(); await w.write(content); await w.close();
+      dirty = false; document.getElementById("save").classList.remove("dirty");
+      msg(`✓ Kaydedildi (<b>${fileHandle.name}</b>). Siteyi açıp F5 ile yenileyin.`, "m-ok");
+      if (fileHandle.name !== "yamalar.js") msg(`Dikkat: <b>${fileHandle.name}</b> adıyla kaydedildi. Site sadece <b>yamalar.js</b> dosyasını okur, tekrar Kaydet'e basıp onu seçin.`, "m-info"), fileHandle = null;
+      return;
+    } catch (e) { if (e.name === "AbortError") return; console.warn(e); }
+  }
+  const a = h("a", { href: URL.createObjectURL(new Blob([content], { type: "text/javascript" })), download: "yamalar.js" });
+  document.body.append(a); a.click(); a.remove();
+  dirty = false; document.getElementById("save").classList.remove("dirty");
+  msg("Tarayıcınız dosyayı doğrudan kaydedemedi, <b>yamalar.js</b> İndirilenler'e indi. Onu <b>kingo-yama</b> klasörüne taşıyıp eskisinin yerine koyun. (Chrome ya da Edge kullanırsanız doğrudan kaydedilir.)", "m-info");
+};
+window.addEventListener("beforeunload", e => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+document.addEventListener("keydown", e => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") { e.preventDefault(); document.getElementById("save").click(); } });
+
+if (!window.YAMALAR) msg("<b>yamalar.js</b> bulunamadı. Bu sayfa, index.html ve yamalar.js aynı klasörde olmalı.", "m-info");
+render();
+</script>
+</body>
+</html>
