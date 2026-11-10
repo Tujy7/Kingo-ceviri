@@ -108,7 +108,7 @@ window.YAMALAR = [
   "ilerleme": 99,
   "surum": "1.2.0",
   "ozet": "Sıradaki büyük proje.",
-  "detay": "Three Houses için Türkçe yama planlanmaktadır. Çalışmalar başladığında ilerleme burada görünecek.",
+  "detay": "",
   "icerik": [
    "Hikaye",
    "Diyaloglar",
